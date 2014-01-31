@@ -1,18 +1,20 @@
 ![Homework 1](img/header.png)
 
-*This homework is due on Thursday, February 13th 2014 11:59 pm.*
+*This homework is due on Thursday, February 13th 2014 at 11:59 pm.*
 
-In this homework, you will use [D3.js](http://d3js.org/) to create an interactive data table and a bar chart. D3 stands for "Data Driven Documents". It is a library for JavaScript that is very useful for creating interactive visualizations, but D3 can be used to achieve many tasks that other libraries — like JQuery — also enable. This homework assumes, that you have read and coded along Chapters 1-8 in [D3 - Interactive Data Visualization for the Web](http://www.amazon.com/Interactive-Data-Visualization-Scott-Murray/dp/1449339735/ref=tmm_pap_title_0) by Scott Murray. See the [Readings Page](http://www.cs171.org/#!readings.md) for access to free online copies. 
+In this homework, you will use [D3.js](http://d3js.org/) to create an interactive data table and a bar chart. D3 stands for "Data Driven Documents." It is a library for JavaScript that is very useful for creating interactive visualizations, but D3 can be used to achieve many tasks that other libraries — like JQuery — also enable. This homework assumes that you have read and coded along with Chapters 1-8 in [D3 - Interactive Data Visualization for the Web](http://www.amazon.com/Interactive-Data-Visualization-Scott-Murray/dp/1449339735/ref=tmm_pap_title_0) by Scott Murray. See the [Readings Page](http://www.cs171.org/#!readings.md) for access to free online copies. 
 
-We use data collected and published by the [U.S. Bureau of Labor Statistic](http://www.bls.gov/). The Bureau defines itself as:
+We use data collected and published by the [U.S. Bureau of Labor Statistics](http://www.bls.gov/). The Bureau defines itself as follows:
 
 >The Bureau of Labor Statistics is the principal fact-finding agency for the Federal Government in the broad field of labor economics and statistics.
 
-Unemployment data are regularly published on a specific [BLS web page](http://www.bls.gov/web/laus/laumstrk.htm). 
+Unemployment data are regularly published on a specific [BLS web page](http://www.bls.gov/web/laus/laumstrk.htm).
+
 The Bureau of Labor Statistics released, for example, [a statement](http://www.bls.gov/news.release/empsit.nr0.htm):
+
 >The unemployment rate declined from 7.0 percent to 6.7 percent in December, while total nonfarm payroll employment edged up (+74,000), the U.S. Bureau of Labor Statistics reported today. Employment rose in retail trade and wholesale trade but was down in information."
 
-In this homework, we will explore how this unemployment breaks down into states. Below is a brief sample of this data (Nov. 2013., but data on the page are more recent):
+In this homework, we will explore how this unemployment is broken down by state. Below is a brief sample of this data (Nov. 2013., but data on the page are more recent):
 
 | Rank |      State   | Rate |
 | ---- | ------------ | ---- |
@@ -31,7 +33,7 @@ Ensure you respond to questions in the appropriate text file (as described in th
 git clone https://github.com/CS171/HW1.git
 ```
 
-We recommend that you create your github repository following this convention: 
+We recommend that you name your GitHub repository following this convention: 
 
 ```
 cs171-hw1-lastname-firstname
@@ -41,7 +43,7 @@ Share it with `cs171tf` and your grading TF (we will tell you who this is in tim
 
 Refer to the [CS 171 web page](http://www.cs171.org/#!homework.md) for more information on how to submit your homework.
 
-In case you find an error in this homework, you are welcome to fork the repository, fix the error and submit a pull request!
+In case you find an error in this homework, you are welcome to fork the repository, fix the error, and submit a pull request!
 
 
 ### Introductory Questions
