@@ -27,11 +27,7 @@ This is essentially a one dimensional dataset — seems simple enough. We will s
 
 ### Formalities
 
-Ensure you respond to questions in the appropriate text file (as described in the subheading for each section). You can use [Markdown](https://en.wikipedia.org/wiki/Markdown) to format your answers. You can clone this repository using the following command: 
-
-```
-git clone https://github.com/CS171/HW1.git
-```
+Ensure you respond to questions in the appropriate text file (as described in the subheading for each section). You can use [Markdown](https://en.wikipedia.org/wiki/Markdown) to format your answers. Follow [the instructions](https://piazza.com/class/ho6118hjjnr6u6?cid=29) on Piazza for cloning the repository.
 
 We recommend that you name your GitHub repository following this convention: 
 
@@ -43,7 +39,7 @@ Share it with `cs171tf` and your grading TF (we will tell you who this is in tim
 
 Refer to the [CS 171 web page](http://www.cs171.org/#!homework.md) for more information on how to submit your homework.
 
-In case you find an error in this homework, you are welcome to fork the repository, fix the error, and submit a pull request!
+In case you find an error in this homework, you are welcome to fix the error (open this file on Github and click "edit" in the top right corner) and submit a pull request!
 
 
 ### Introductory Questions
