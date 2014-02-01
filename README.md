@@ -2,6 +2,8 @@
 
 *This homework is due on Thursday, February 13th 2014 at 11:59 pm.*
 
+Assignment completed by Renzo Lucioni (Email: rlucioni@college.harvard.edu, HUID: 90760092).
+
 In this homework, you will use [D3.js](http://d3js.org/) to create an interactive data table and a bar chart. D3 stands for "Data Driven Documents." It is a library for JavaScript that is very useful for creating interactive visualizations, but D3 can be used to achieve many tasks that other libraries — like JQuery — also enable. This homework assumes that you have read and coded along with Chapters 1-8 in [D3 - Interactive Data Visualization for the Web](http://www.amazon.com/Interactive-Data-Visualization-Scott-Murray/dp/1449339735/ref=tmm_pap_title_0) by Scott Murray. See the [Readings Page](http://www.cs171.org/#!readings.md) for access to free online copies. 
 
 We use data collected and published by the [U.S. Bureau of Labor Statistics](http://www.bls.gov/). The Bureau defines itself as follows:
