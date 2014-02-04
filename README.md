@@ -139,7 +139,7 @@ We now use the sorting function to reorder the table. As you may have noticed, a
 * Similarly, provide functionality such that the rate column is sorted when the respective header cell is clicked. (tip: make sure you are comparing floats, not strings, else the behavior will be subtly wrong)
 * Note that sorting by Rate can result into ties, causing random and inconsistent sorting. For instance, MISSOURI and TEXAS have a rate of 6.1. Use the alphabetical state order to solve this issue. See the [documentation](https://github.com/mbostock/d3/wiki/Arrays#wiki-ordering) for additional information.
 * Ensure that zebra row coloring developed in the previous problem is maintained after sorting.
-* Reverse the sorting if the user clicks twice on the same column (including reverse alphabetical order for tied rates). This implies that you have to keep track of the order of each column. 
+* Reverse the sorting when the user clicks twice on the same column. Use reverse alphabetical order to break ties (ie. descending sort should be the exact opposite of ascending sort).
 * Use CSS to change the cursor shown when hovering over the table headers. Use `cursor: s-resize` if clicking will trigger an ascending sort and `cursor: n-resize` if it will trigger a descending sort.
 
 ## Problem 4: Rank Colors and Bar Chart
