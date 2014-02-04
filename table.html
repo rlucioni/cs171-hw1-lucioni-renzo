@@ -1,36 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>CS171 Homework 1</title>
+    <meta charset="utf-8" />
+    <title>CS171 Homework 1</title>
 
-  <style type="text/css">
-  /* YOUR CSS */
-  </style>
+    <style type="text/css">
+    /* YOUR CSS */
+    </style>
 </head>
 <body>
-  <script src="http://d3js.org/d3.v3.min.js"></script>
-  <script>
-  d3.tsv("unemp_states_us_nov_2013.tsv", function(error, data){
+    <script src="http://d3js.org/d3.v3.min.js"></script>
 
-      var table = d3.select("body").append("table"),
-      tbody = table.append("tbody");
+    <!-- NOTE: I'm using CoffeeScript to generate the JavaScript necessary to work with D3. I store my CoffeeScript in the `coffee` directory, and keep the compiled, human-readable JavaScript in the `js` directory. -->
+    <script src="js/table.js"></script>
 
-      var rows = tbody.selectAll("tr")
-      .data(data)
-      .enter()
-      .append("tr");
+    <script>
+    // d3.text("unemp_states_us_nov_2013.tsv", function(error, data) {
 
-      var cells = rows.selectAll("td")
-      .data(function(row) {
-        return d3.range(Object.keys(row).length).map(function(column, i) {
-          return row[Object.keys(row)[i]];
-          });
-        })
-      .enter()
-      .append("td")
-      .text(function(d) { return d; });
-      });
-  </script>
+    //     d3.select("body")
+    //         .append("h1")
+    //         // assignment gives permission to hardcode
+    //         .text("Unemployment Rates for States");
+
+    //     var table = d3.select("body").append("table");
+
+    //     var caption = table.append("caption"), 
+    //         tHead = table.append("thead"),
+    //         tBody = table.append("tbody");
+
+    //     // assignment gives permission to hardcode
+    //     caption.html("Unemployment Rates for States" + 
+    //             "<br>" + "Monthly Rankings" + 
+    //             "<br>" + "Seasonally Adjusted" + 
+    //             "<br>" + "Dec. 2013" + 
+    //             "<sup>" + "p" + "</sup>");
+
+    //     var dataset = [];
+
+    //     d3.tsv.parseRows(data, function(row, ix) {
+    //         dataset.push({
+    //             "Rank": row[0], 
+    //             "State": row[1], 
+    //             "Rate": row[2]
+    //         });
+    //     });
+
+    //     var header = tHead.selectAll("tr")
+    //         .data(dataset.slice(0,1))
+    //         .enter()
+    //         .append("tr");
+
+    //     var rows = tBody.selectAll("tr")
+    //         .data(dataset.slice(1))
+    //         .enter()
+    //         .append("tr");
+
+    //     var headerCells = header.selectAll("th")
+    //         .data(function(row) {
+    //             return d3.range(Object.keys(row).length).map(function(column, i) {
+    //                 return row[Object.keys(row)[i]];
+    //             });
+    //         })
+    //         .enter()
+    //         .append("th")
+    //         .text(function(d) { return d; });
+
+    //     var dataCells = rows.selectAll("td")
+    //         .data(function(row) {
+    //             return d3.range(Object.keys(row).length).map(function(column, i) {
+    //                 console.log("Column: " + column, "i: " + i);
+    //                 return row[Object.keys(row)[i]];
+    //             });
+    //         })
+    //         .enter()
+    //         .append("td")
+    //         .text(function(d) { return d; });
+    // });
+    </script>
 </body>
 </html>
