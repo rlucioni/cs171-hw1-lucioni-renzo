@@ -8,6 +8,7 @@
         
         body {
             font: 13px Tahoma, Arial, Helvetica, sans-serif;
+            cursor: default;
         }
         h1 {
             text-align: center;
@@ -22,11 +23,17 @@
             margin-left: auto;
             margin-right: auto;
         }
-        caption {
+        caption.upper {
             border-top: 1px solid black;
             border-left: 1px solid black;
             border-right: 1px solid black;
             font-weight: bold;
+            padding: 3px;
+        }
+        caption.lower {
+            caption-side: bottom;
+            text-align: left;
+            padding: 7px;
         }
         thead th {
             border: 1px solid gray;
@@ -56,68 +63,5 @@
     <!-- NOTE: I'm using CoffeeScript to generate the JavaScript necessary to work with D3. I store my CoffeeScript in the `coffee` directory, and keep the compiled, human-readable JavaScript in the `js` directory. -->
     <script src="js/table.js"></script>
 
-    <script>
-    // d3.text("unemp_states_us_nov_2013.tsv", function(error, data) {
-
-    //     d3.select("body")
-    //         .append("h1")
-    //         // assignment gives permission to hardcode
-    //         .text("Unemployment Rates for States");
-
-    //     var table = d3.select("body").append("table");
-
-    //     var caption = table.append("caption"), 
-    //         tHead = table.append("thead"),
-    //         tBody = table.append("tbody");
-
-    //     // assignment gives permission to hardcode
-    //     caption.html("Unemployment Rates for States" + 
-    //             "<br>" + "Monthly Rankings" + 
-    //             "<br>" + "Seasonally Adjusted" + 
-    //             "<br>" + "Dec. 2013" + 
-    //             "<sup>" + "p" + "</sup>");
-
-    //     var dataset = [];
-
-    //     d3.tsv.parseRows(data, function(row, ix) {
-    //         dataset.push({
-    //             "Rank": row[0], 
-    //             "State": row[1], 
-    //             "Rate": row[2]
-    //         });
-    //     });
-
-    //     var header = tHead.selectAll("tr")
-    //         .data(dataset.slice(0,1))
-    //         .enter()
-    //         .append("tr");
-
-    //     var rows = tBody.selectAll("tr")
-    //         .data(dataset.slice(1))
-    //         .enter()
-    //         .append("tr");
-
-    //     var headerCells = header.selectAll("th")
-    //         .data(function(row) {
-    //             return d3.range(Object.keys(row).length).map(function(column, i) {
-    //                 return row[Object.keys(row)[i]];
-    //             });
-    //         })
-    //         .enter()
-    //         .append("th")
-    //         .text(function(d) { return d; });
-
-    //     var dataCells = rows.selectAll("td")
-    //         .data(function(row) {
-    //             return d3.range(Object.keys(row).length).map(function(column, i) {
-    //                 console.log("Column: " + column, "i: " + i);
-    //                 return row[Object.keys(row)[i]];
-    //             });
-    //         })
-    //         .enter()
-    //         .append("td")
-    //         .text(function(d) { return d; });
-    // });
-    </script>
 </body>
 </html>
