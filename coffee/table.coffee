@@ -21,6 +21,7 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
     tieBreakerColumn = null
     # test first row of data
     for ix in d3.range(dataset[1].length)
+        # use first non-numeric column for tie-breaking
         if !isNumeric(dataset[1][ix])
             tieBreakerColumn = ix
             break
@@ -36,6 +37,7 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
         .data(dataset[1..])
         .enter()
         .append("tr")
+        # zebra striping
         .style("background-color", (d, row) -> 
             if row % 2 is 0 then "#e9e9e9" else "#ffffff"
         )
@@ -44,6 +46,7 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
         .data((row) -> row)
         .enter()
         .append("th")
+        .style("cursor", "s-resize")
         .text((d) -> d)
 
     dataCells = rows.selectAll("td")
@@ -68,7 +71,16 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
             .style("background-color", null)
     )
 
+    ascending = false
+
     headerCells.on("click", (d, column) ->
+        ascending = !ascending
+
+        if ascending
+            headerCells.style("cursor", "n-resize")
+        else
+            headerCells.style("cursor", "s-resize")
+
         rows = tBody.selectAll("tr")
             .sort((a, b) ->
                 valueA = a[column]
@@ -77,21 +89,35 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
                 if isNumeric(valueA) and isNumeric(valueB)
                     valueA = +valueA
                     valueB = +valueB
-                
-                verdict = d3.ascending(valueA, valueB)
-                
-                if verdict == 0 and tieBreakerColumn != null
-                    aTieBreaker = a[tieBreakerColumn].toLowerCase()
-                    bTieBreaker = b[tieBreakerColumn].toLowerCase()
-                    if aTieBreaker < bTieBreaker
-                        return -1
-                    else if aTieBreaker > bTieBreaker
-                        return 1
-                    else
-                        return 0
-                else
-                    return verdict
 
+                if ascending
+                    verdict = d3.ascending(valueA, valueB)
+
+                    if verdict == 0 and tieBreakerColumn != null
+                        aTieBreaker = a[tieBreakerColumn].toLowerCase()
+                        bTieBreaker = b[tieBreakerColumn].toLowerCase()
+                        if aTieBreaker < bTieBreaker
+                            return -1
+                        else if aTieBreaker > bTieBreaker
+                            return 1
+                        else
+                            return 0
+                    else
+                        return verdict
+                else
+                    verdict = d3.descending(valueA, valueB)
+                
+                    if verdict == 0 and tieBreakerColumn != null
+                        aTieBreaker = a[tieBreakerColumn].toLowerCase()
+                        bTieBreaker = b[tieBreakerColumn].toLowerCase()
+                        if aTieBreaker > bTieBreaker
+                            return -1
+                        else if aTieBreaker < bTieBreaker
+                            return 1
+                        else
+                            return 0
+                    else
+                        return verdict
             )
             .style("background-color", (d, row) -> 
                 if row % 2 is 0 then "#e9e9e9" else "#ffffff"
