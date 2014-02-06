@@ -20,16 +20,10 @@ d3.text("unemp_states_us_nov_2013.tsv", function(error, data) {
     }
   }
   header = tHead.selectAll("tr").data(dataset.slice(0, 1)).enter().append("tr");
-  rows = tBody.selectAll("tr").data(dataset.slice(1)).enter().append("tr").style("background-color", function(d, row) {
-    if (row % 2 === 0) {
-      return "#e9e9e9";
-    } else {
-      return "#ffffff";
-    }
-  });
+  rows = tBody.selectAll("tr").data(dataset.slice(1)).enter().append("tr");
   headerCells = header.selectAll("th").data(function(row) {
     return row;
-  }).enter().append("th").style("cursor", "s-resize").text(function(d) {
+  }).enter().append("th").style("cursor", "s-resize").style("background-color", "#e9e9e9").text(function(d) {
     return d;
   });
   dataCells = rows.selectAll("td").data(function(row) {
@@ -39,22 +33,37 @@ d3.text("unemp_states_us_nov_2013.tsv", function(error, data) {
   }).text(function(d) {
     return d;
   });
-  dataCells.on("mouseover", function(d, column) {
-    d3.select(this.parentNode).style("background-color", "#ffff99");
-    return d3.selectAll(".column-" + column).style("background-color", "#ffff99");
-  });
-  dataCells.on("mouseout", function(d, column) {
-    rows.style("background-color", function(d, row) {
-      if (row % 2 === 0) {
-        return "#e9e9e9";
+  rows = rows.sort(function(a, b) {
+    var aTieBreaker, bTieBreaker, valueA, valueB, verdict;
+    valueA = a[0];
+    valueB = b[0];
+    if (isNumeric(valueA) && isNumeric(valueB)) {
+      valueA = +valueA;
+      valueB = +valueB;
+    }
+    verdict = d3.ascending(valueA, valueB);
+    if (verdict === 0 && tieBreakerColumn !== null) {
+      aTieBreaker = a[tieBreakerColumn].toLowerCase();
+      bTieBreaker = b[tieBreakerColumn].toLowerCase();
+      if (aTieBreaker < bTieBreaker) {
+        return -1;
+      } else if (aTieBreaker > bTieBreaker) {
+        return 1;
       } else {
-        return "#ffffff";
+        return 0;
       }
-    });
-    return d3.selectAll(".column-" + column).style("background-color", null);
+    } else {
+      return verdict;
+    }
+  }).style("background-color", function(d, row) {
+    if (row % 2 === 1) {
+      return "#e9e9e9";
+    } else {
+      return "#ffffff";
+    }
   });
-  ascending = false;
-  return headerCells.on("click", function(d, column) {
+  ascending = true;
+  headerCells.on("click", function(d, column) {
     ascending = !ascending;
     if (ascending) {
       headerCells.style("cursor", "n-resize");
@@ -101,11 +110,25 @@ d3.text("unemp_states_us_nov_2013.tsv", function(error, data) {
         }
       }
     }).style("background-color", function(d, row) {
-      if (row % 2 === 0) {
+      if (row % 2 === 1) {
         return "#e9e9e9";
       } else {
         return "#ffffff";
       }
     });
+  });
+  dataCells.on("mouseover", function(d, column) {
+    d3.select(this.parentNode).style("background-color", "#ffff99");
+    return d3.selectAll(".column-" + column).style("background-color", "#ffff99");
+  });
+  return dataCells.on("mouseout", function(d, column) {
+    rows.style("background-color", function(d, row) {
+      if (row % 2 === 1) {
+        return "#e9e9e9";
+      } else {
+        return "#ffffff";
+      }
+    });
+    return d3.selectAll(".column-" + column).style("background-color", null);
   });
 });

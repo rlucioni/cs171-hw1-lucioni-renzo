@@ -4,54 +4,48 @@
     <meta charset="utf-8" />
     <title>CS171 Homework 1</title>
 
+    <!-- Google Web Fonts (Lato) -->
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+
+    <!-- Font Awesome (icons) -->
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
     <style type="text/css">
         
         body {
-            font: 100% Helvetica, sans-serif;
+            font-family: 'Lato', sans-serif;
             cursor: default;
         }
         h1 {
-            font: 2em Helvetica, sans-serif;
+            font-size: 1.8em;
             font-weight: normal;
             text-align: center;
         }
         table {
-            /*font: 1em Helvetica;*/
             border-collapse: collapse;
-            /*border-top: 1px solid gray;
-            border-left: 1px solid black;
-            border-right: 1px solid black;
-            border-bottom: 1px solid black;*/
             margin-left: auto;
             margin-right: auto;
         }
         caption {
-            border-top: 1px solid black;
-            border-left: 1px solid black;
-            border-right: 1px solid black;
-            border: 1px solid black;
             font-weight: bold;
             padding: 7px;
         }
+        /* add sort icons */
+        thead th:before {
+            content: "\f0dc"; 
+            font-family: FontAwesome;
+            color: #696969;
+            font-size: 1em;
+            padding-right: 0.4em;
+        }
         thead th {
-            font: 1.4em Helvetica;
-            /*border: 1px solid gray;*/
+            color: #696969;
+            font-size: 1.2em;
             padding: 7px;
         }
         tbody td {
-            /*border-top: 1px solid gray;
-            border-left: 1px solid gray;
-            border-right: 1px solid gray;*/
-            padding: 7px;
-        }
-        th:first-child, td:first-child {
-            border-left: none;
-        }
-        th:last-child, td:last-child {
-            border-right: none;
-        }
-        td:nth-child(odd) {
             text-align: center;
+            padding: 7px;
         }
 
     </style>
@@ -59,7 +53,7 @@
 <body>
     <script src="http://d3js.org/d3.v3.min.js"></script>
 
-    <!-- NOTE: I'm using CoffeeScript to generate the JavaScript necessary to work with D3. I store my CoffeeScript in the `coffee` directory, and keep the compiled, human-readable JavaScript in the `js` directory. -->
+    <!-- NOTE: I'm using CoffeeScript to generate the JavaScript necessary to work with D3. I store my CoffeeScript in the `coffee` directory, and keep the compiled, human-readable JavaScript in the `js` directory. The CoffeeScript code contains my comments and formatting. Thank you for understanding. -->
     <script src="js/table.js"></script>
 
 </body>

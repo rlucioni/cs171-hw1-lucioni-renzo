@@ -12,12 +12,13 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
     tHead = table.append("thead")
     tBody = table.append("tbody")
 
-    # array of arrays, one for each row
+    # dataset is an array of arrays, one for each row
     dataset = d3.tsv.parseRows(data)
 
     isNumeric = (num) ->
         !isNaN(num)
 
+    # default to null, in case there is no tie-breaker
     tieBreakerColumn = null
     # test first row of data
     for ix in d3.range(dataset[1].length)
@@ -37,16 +38,13 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
         .data(dataset[1..])
         .enter()
         .append("tr")
-        # zebra striping
-        .style("background-color", (d, row) -> 
-            if row % 2 is 0 then "#e9e9e9" else "#ffffff"
-        )
 
     headerCells = header.selectAll("th")
         .data((row) -> row)
         .enter()
         .append("th")
         .style("cursor", "s-resize")
+        .style("background-color", "#e9e9e9")
         .text((d) -> d)
 
     dataCells = rows.selectAll("td")
@@ -56,22 +54,39 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
         .attr("class", (d, column) -> "column-#{column}")
         .text((d) -> d)
 
-    dataCells.on("mouseover", (d, column) ->
-        d3.select(this.parentNode)
-            .style("background-color", "#ffff99")
-        d3.selectAll(".column-#{column}")
-            .style("background-color", "#ffff99")
-    )
+    # initial ascending sort
+    rows = rows.sort((a, b) ->
+        # Sort by first column - this is the most general solution. It works in
+        # the event that there is no third column, and in this case gives the
+        # same result as sorting by "Rate."
+        valueA = a[0]
+        valueB = b[0]
+        
+        if isNumeric(valueA) and isNumeric(valueB)
+            valueA = +valueA
+            valueB = +valueB
 
-    dataCells.on("mouseout", (d, column) ->
-        rows.style("background-color", (d, row) -> 
-            if row % 2 is 0 then "#e9e9e9" else "#ffffff"
+        verdict = d3.ascending(valueA, valueB)
+
+        if verdict == 0 and tieBreakerColumn != null
+            aTieBreaker = a[tieBreakerColumn].toLowerCase()
+            bTieBreaker = b[tieBreakerColumn].toLowerCase()
+            if aTieBreaker < bTieBreaker
+                return -1
+            else if aTieBreaker > bTieBreaker
+                return 1
+            else
+                return 0
+        else
+            return verdict
         )
-        d3.selectAll(".column-#{column}")
-            .style("background-color", null)
-    )
+        # zebra striping
+        .style("background-color", (d, row) -> 
+            if row % 2 is 1 then "#e9e9e9" else "#ffffff"
+        )
 
-    ascending = false
+    # save sort state
+    ascending = true
 
     headerCells.on("click", (d, column) ->
         ascending = !ascending
@@ -87,6 +102,7 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
                 valueB = b[column]
                 
                 if isNumeric(valueA) and isNumeric(valueB)
+                    # convert to int or float, as appropriate
                     valueA = +valueA
                     valueB = +valueB
 
@@ -119,8 +135,26 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
                     else
                         return verdict
             )
+            # restore zebra striping
             .style("background-color", (d, row) -> 
-                if row % 2 is 0 then "#e9e9e9" else "#ffffff"
+                if row % 2 is 1 then "#e9e9e9" else "#ffffff"
             )
+    )
+
+    dataCells.on("mouseover", (d, column) ->
+        # highlight current row
+        d3.select(this.parentNode)
+            .style("background-color", "#ffff99")
+        # highlight current column
+        d3.selectAll(".column-#{column}")
+            .style("background-color", "#ffff99")
+    )
+
+    dataCells.on("mouseout", (d, column) ->
+        rows.style("background-color", (d, row) -> 
+            if row % 2 is 1 then "#e9e9e9" else "#ffffff"
+        )
+        d3.selectAll(".column-#{column}")
+            .style("background-color", null)
     )
 )
