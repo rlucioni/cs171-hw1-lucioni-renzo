@@ -69,7 +69,7 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
                 if isNumeric(valueA) and isNumeric(valueB)
                     valueA = +valueA
                     valueB = +valueB
-
+                # if this returns 0, sort lexicographically on state name
                 d3.ascending(valueA, valueB)
             )
             .style("background-color", (d, row) -> 
