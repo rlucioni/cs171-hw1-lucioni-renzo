@@ -15,6 +15,16 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
     # array of arrays, one for each row
     dataset = d3.tsv.parseRows(data)
 
+    isNumeric = (num) ->
+        !isNaN(num)
+
+    tieBreakerColumn = null
+    # test first row of data
+    for ix in d3.range(dataset[1].length)
+        if !isNumeric(dataset[1][ix])
+            tieBreakerColumn = ix
+            break
+
     header = tHead.selectAll("tr")
         # first element contains header text
         .data(dataset[0...1])
@@ -58,19 +68,30 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
             .style("background-color", null)
     )
 
-    isNumeric = (num) ->
-        !isNaN(num)
-
     headerCells.on("click", (d, column) ->
         rows = tBody.selectAll("tr")
             .sort((a, b) ->
                 valueA = a[column]
                 valueB = b[column]
+                
                 if isNumeric(valueA) and isNumeric(valueB)
                     valueA = +valueA
                     valueB = +valueB
-                # if this returns 0, sort lexicographically on state name
-                d3.ascending(valueA, valueB)
+                
+                verdict = d3.ascending(valueA, valueB)
+                
+                if verdict == 0 and tieBreakerColumn != null
+                    aTieBreaker = a[tieBreakerColumn].toLowerCase()
+                    bTieBreaker = b[tieBreakerColumn].toLowerCase()
+                    if aTieBreaker < bTieBreaker
+                        return -1
+                    else if aTieBreaker > bTieBreaker
+                        return 1
+                    else
+                        return 0
+                else
+                    return verdict
+
             )
             .style("background-color", (d, row) -> 
                 if row % 2 is 0 then "#e9e9e9" else "#ffffff"
