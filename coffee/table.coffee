@@ -6,68 +6,93 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
 
     table = d3.select("body").append("table")
 
+    table.append("caption")
+        .html("Unemployment Rates for States<br>Monthly Rankings<br>Seasonally Adjusted<br>Dec. 2013<sup>p</sup>")
+    
     tHead = table.append("thead")
     tBody = table.append("tbody")
 
-    table.append("caption")
-        .attr("class", "upper") 
-        .html("Unemployment Rates for States<br>Monthly Rankings<br>Seasonally Adjusted<br>Dec. 2013<sup>p</sup>")
-
-    table.append("caption")
-        .attr("class", "lower")
-        .html("<sup>p</sup> = preliminary")
-
-    dataset = []
-    d3.tsv.parseRows(data, (row) ->
-        dataset.push(
-            "Rank": row[0], 
-            "State": row[1], 
-            "Rate": row[2]
-        )
-    )
+    # array of arrays, one for each row
+    dataset = d3.tsv.parseRows(data)
 
     header = tHead.selectAll("tr")
+        # first element contains header text
         .data(dataset[0...1])
         .enter()
         .append("tr")
 
     rows = tBody.selectAll("tr")
+        # other elements contain data
         .data(dataset[1..])
         .enter()
         .append("tr")
-        .style("background-color", (d, i) -> 
-            if i % 2 is 0 then "#f1f1f1" else "#ffffff"
+        .style("background-color", (d, row) -> 
+            if row % 2 is 0 then "#e9e9e9" else "#ffffff"
         )
 
     headerCells = header.selectAll("th")
-        .data((row) ->
-            row[key] for key of row
-        )
+        .data((row) -> row)
         .enter()
         .append("th")
         .text((d) -> d)
 
     dataCells = rows.selectAll("td")
-        .data((row) ->
-            row[key] for key of row
-        )
+        .data((row) -> row)
         .enter()
         .append("td")
-        .attr("class", (d, i) -> "column-#{i}")
+        .attr("class", (d, column) -> "column-#{column}")
         .text((d) -> d)
 
-    dataCells.on("mouseover", (d, i) ->
+    dataCells.on("mouseover", (d, column) ->
         d3.select(this.parentNode)
             .style("background-color", "#ffff99")
-        d3.selectAll(".column-#{i}")
+        d3.selectAll(".column-#{column}")
             .style("background-color", "#ffff99")
     )
 
-    dataCells.on("mouseout", (d, i) ->
-        rows.style("background-color", (d, i) -> 
-            if i % 2 is 0 then "#f1f1f1" else "#ffffff"
+    dataCells.on("mouseout", (d, column) ->
+        rows.style("background-color", (d, row) -> 
+            if row % 2 is 0 then "#e9e9e9" else "#ffffff"
         )
-        d3.selectAll(".column-#{i}")
+        d3.selectAll(".column-#{column}")
             .style("background-color", null)
+    )
+
+    isNumeric = (num) ->
+        !isNaN(num)
+
+    headerCells.on("click", (d, column) ->
+        rows = tBody.selectAll("tr")
+            .sort((a, b) ->
+                valueA = a[column]
+                valueB = b[column]
+                if isNumeric(valueA) and isNumeric(valueB)
+                    valueA = +valueA
+                    valueB = +valueB
+
+                d3.ascending(valueA, valueB)
+            )
+            .style("background-color", (d, row) -> 
+                if row % 2 is 0 then "#e9e9e9" else "#ffffff"
+            )
+
+        # if d == "State"
+        #     rows = tBody.selectAll("tr")
+        #         .sort((a, b) ->
+        #             d3.ascending(a["State"], b["State"])
+        #         )
+        #         .style("background-color", (d, i) -> 
+        #             if i % 2 is 0 then "#e9e9e9" else "#ffffff"
+        #         )
+        # else if d == "Rate"
+        #     rows = tBody.selectAll("tr")
+        #         .sort((a, b) ->
+        #             floated_a = parseFloat(a["Rate"])
+        #             floated_b = parseFloat(b["Rate"])
+        #             d3.ascending(floated_a, floated_b)
+        #         )
+        #         .style("background-color", (d, i) -> 
+        #             if i % 2 is 0 then "#e9e9e9" else "#ffffff"
+        #         )
     )
 )
