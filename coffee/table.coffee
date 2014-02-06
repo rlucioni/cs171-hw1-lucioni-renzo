@@ -75,24 +75,5 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
             .style("background-color", (d, row) -> 
                 if row % 2 is 0 then "#e9e9e9" else "#ffffff"
             )
-
-        # if d == "State"
-        #     rows = tBody.selectAll("tr")
-        #         .sort((a, b) ->
-        #             d3.ascending(a["State"], b["State"])
-        #         )
-        #         .style("background-color", (d, i) -> 
-        #             if i % 2 is 0 then "#e9e9e9" else "#ffffff"
-        #         )
-        # else if d == "Rate"
-        #     rows = tBody.selectAll("tr")
-        #         .sort((a, b) ->
-        #             floated_a = parseFloat(a["Rate"])
-        #             floated_b = parseFloat(b["Rate"])
-        #             d3.ascending(floated_a, floated_b)
-        #         )
-        #         .style("background-color", (d, i) -> 
-        #             if i % 2 is 0 then "#e9e9e9" else "#ffffff"
-        #         )
     )
 )
