@@ -1,0 +1,34 @@
+body {
+    font-family: 'Lato', sans-serif;
+    cursor: default;
+}
+h1 {
+    font-size: 1.8em;
+    font-weight: normal;
+    text-align: center;
+}
+table {
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40%;
+}
+caption {
+    font-weight: bold;
+    padding: 7px;
+}
+/* add sort icons */
+thead th:before {
+    content: "\f0dc"; 
+    font-family: FontAwesome;
+    font-size: 1em;
+    padding-right: 0.4em;
+}
+thead th {
+    font-size: 1.2em;
+    padding: 7px;
+}
+tbody td {
+    text-align: center;
+    padding: 7px;
+}
