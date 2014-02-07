@@ -27,6 +27,14 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
             tieBreakerColumn = ix
             break
 
+    colors = 
+        zebraPrimary: "#e9e9e9"
+        zebraAlternate: "#ffffff"
+        columnLow: "#fee8c8"
+        columnHigh: "#d7301f"
+        bar: "#a6cee3"
+        highlight: "#ffff99"
+
     header = tHead.selectAll("tr")
         # first element contains header text
         .data(dataset[0...1])
@@ -43,8 +51,8 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
         .data((row) -> row)
         .enter()
         .append("th")
-        .style("cursor", "s-resize")
-        .style("background-color", "#e9e9e9")
+        .style("cursor", "n-resize")
+        .style("background-color", colors.zebraPrimary)
         .text((d) -> d)
 
     dataCells = rows.selectAll("td")
@@ -54,6 +62,52 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
         .attr("class", (d, column) -> "column-#{column}")
         .text((d) -> d)
 
+    # column at index `sourceColumn` must contain numerical data (can be stored as strings)
+    addBars = (sourceColumn, barsColumn) ->
+        svgWidth = 100
+        svgHeight = 20
+
+        # fetch data from column
+        columnData = d3.selectAll(".column-#{sourceColumn}").data().map((n) -> +n)
+
+        xScale = d3.scale.linear()
+            .domain([d3.min(columnData)/2, d3.max(columnData)])
+            .range([0, svgWidth])
+
+        header.insert("th")
+        # header.insert("th", ":first-child")
+            # will always add a bar chart, so this generalizes
+            .data(["Bar Chart"])
+            .style("cursor", "n-resize")
+            .style("background-color", colors.zebraPrimary)
+            .text("Bar Chart")
+
+        headerCells = header.selectAll("th")
+
+        rows.insert("td")
+        # rows.insert("td", ":first-child")
+            .data(columnData)
+            .attr("class", "column-#{barsColumn}")
+            .append("svg")
+            .attr("width", svgWidth)
+            .attr("height", svgHeight)
+            .append("rect")
+            .attr(
+                "height": svgHeight
+                # "width": (d) -> xScale(+d[sourceColumn])
+                "width": (d) -> xScale(d)
+                "fill": colors.bar
+            )
+
+        dataCells = rows.selectAll("td")
+
+    # add bars corresponding to column at index 2 (in this case, "Rate")
+    sourceColumn = 2
+    barsColumn = 3
+    addBars(sourceColumn, barsColumn)
+
+    # remember sort state
+    ascending = true
     # initial ascending sort
     rows = rows.sort((a, b) ->
         # Sort by first column - this is the most general solution. It works in
@@ -81,13 +135,11 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
         else
             return verdict
         )
-        # zebra striping
-        .style("background-color", (d, row) -> 
-            if row % 2 is 1 then "#e9e9e9" else "#ffffff"
-        )
 
-    # save sort state
-    ascending = true
+    zebraStripe = () ->
+        rows.style("background-color", (d, row) -> 
+                if row % 2 is 1 then colors.zebraPrimary else colors.zebraAlternate
+        )
 
     colorColumn = (column) ->
         # fetch data from column
@@ -95,19 +147,24 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
             # converts to int or float, as appropriate
             if isNumeric(n) then +n
         )
+
         color = d3.scale.linear()
             .domain([d3.min(columnData), d3.max(columnData)])
             .interpolate(d3.interpolateRgb)
-            .range(["orangered", "silver"])
+            # nicer color sequence; higher saturation means higher unemployment
+            .range([colors.columnLow, colors.columnHigh])
 
         d3.selectAll(".column-#{column}")
-            .style("background-color", (d) ->
-                color(d)
-            )
+            .style("background-color", (d) -> color(d))
+    
+    # apply zebra striping
+    zebraStripe()
+    # color column at index 2 (in this case, "Rate")
+    coloredColumn = 2
+    colorColumn(coloredColumn)
 
-    # color third column (index 2)
-    colorColumn(2)
-
+    # sorting assumes that "column" order matches dataset order (i.e., an item found in 
+    # column 2 in the dataset is expected to be in column 2 of the table)
     headerCells.on("click", (d, column) ->
         ascending = !ascending
 
@@ -117,6 +174,9 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
             headerCells.style("cursor", "s-resize")
 
         rows = rows.sort((a, b) ->
+            if d == "Bar Chart"
+                column = sourceColumn
+
             valueA = a[column]
             valueB = b[column]
             
@@ -154,35 +214,30 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
                 else
                     return verdict
             )
-            # restore zebra striping
-            .style("background-color", (d, row) -> 
-                if row % 2 is 1 then "#e9e9e9" else "#ffffff"
-            )
 
+        # restore zebra striping
+        zebraStripe()
         # restore column coloring
-        colorColumn(2)
+        colorColumn(coloredColumn)
     )
 
     dataCells.on("mouseover", (d, column) ->
-        # highlight current row
-        d3.select(this.parentNode)
-            .style("background-color", "#ffff99")
         # highlight current column
         d3.selectAll(".column-#{column}")
-            .style("background-color", "#ffff99")
+            .style("background-color", colors.highlight)
+        # highlight current row
+        d3.select(this.parentNode)
+            .style("background-color", colors.highlight)
         # restore column coloring
-        colorColumn(2)
+        colorColumn(coloredColumn)
     )
 
     dataCells.on("mouseout", (d, column) ->
-        # restore zebra striping
-        rows.style("background-color", (d, row) -> 
-            if row % 2 is 1 then "#e9e9e9" else "#ffffff"
-        )
-        
         d3.selectAll(".column-#{column}")
             .style("background-color", null)
+        # restore zebra striping
+        zebraStripe()
         # restore column coloring
-        colorColumn(2)
+        colorColumn(coloredColumn)
     )
 )
