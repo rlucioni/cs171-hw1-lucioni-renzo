@@ -7,7 +7,9 @@ margin =
 canvasWidth = 900 - margin.left - margin.right
 canvasHeight = 900 - margin.top - margin.bottom
 
+# bar width
 xScale = d3.scale.linear().range([0, canvasWidth])
+# vertical bar position
 yScale = d3.scale.ordinal().rangeRoundBands([0, canvasHeight], .8, 0)
 
 barHeight = 15
