@@ -221,10 +221,10 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
     )
 
     dataCells.on("mouseover", (d, column) ->
-        # lightYellow current column
+        # highlight current column
         d3.selectAll(".column-#{column}")
             .style("background-color", colors.lightYellow)
-        # lightYellow current row
+        # highlight current row
         d3.select(this.parentNode)
             .style("background-color", colors.lightYellow)
         # restore column coloring
