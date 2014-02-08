@@ -1,0 +1,18 @@
+body {
+    font-family: 'Lato', sans-serif;
+    cursor: default;
+}
+#buttons {
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    padding-top: 20px;
+}
+#chart {
+    display: block;
+    margin: 0 auto;
+}
+#title {
+    font-size: 1.7em;
+}
