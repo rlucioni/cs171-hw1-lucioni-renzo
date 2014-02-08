@@ -20,18 +20,17 @@ d3.text("unemp_states_us_nov_2013.tsv", function(error, data) {
     }
   }
   colors = {
-    zebraPrimary: "#e9e9e9",
-    zebraAlternate: "#ffffff",
-    columnLow: "#fee8c8",
-    columnHigh: "#d7301f",
-    bar: "#a6cee3",
-    highlight: "#ffff99"
+    gray: "#e9e9e9",
+    white: "#ffffff",
+    crimson: "#cb181d",
+    skyBlue: "#a6cee3",
+    lightYellow: "#ffff99"
   };
   header = tHead.selectAll("tr").data(dataset.slice(0, 1)).enter().append("tr");
   rows = tBody.selectAll("tr").data(dataset.slice(1)).enter().append("tr");
   headerCells = header.selectAll("th").data(function(row) {
     return row;
-  }).enter().append("th").style("cursor", "n-resize").style("background-color", colors.zebraPrimary).text(function(d) {
+  }).enter().append("th").style("cursor", "n-resize").style("background-color", colors.gray).text(function(d) {
     return d;
   });
   dataCells = rows.selectAll("td").data(function(row) {
@@ -49,14 +48,14 @@ d3.text("unemp_states_us_nov_2013.tsv", function(error, data) {
       return +n;
     });
     xScale = d3.scale.linear().domain([0, d3.max(columnData)]).range([0, svgWidth]);
-    header.insert("th").data(["Bar Chart"]).style("cursor", "n-resize").style("background-color", colors.zebraPrimary).text("Bar Chart");
+    header.insert("th").data(["Bar Chart"]).style("cursor", "n-resize").style("background-color", colors.gray).text("Bar Chart");
     headerCells = header.selectAll("th");
     rows.insert("td").data(columnData).attr("class", "column-" + barsColumn).append("svg").attr("width", svgWidth).attr("height", svgHeight).append("rect").attr({
       "height": svgHeight,
       "width": function(d) {
         return xScale(d);
       },
-      "fill": colors.bar
+      "fill": colors.skyBlue
     });
     return dataCells = rows.selectAll("td");
   };
@@ -90,9 +89,9 @@ d3.text("unemp_states_us_nov_2013.tsv", function(error, data) {
   zebraStripe = function() {
     return rows.style("background-color", function(d, row) {
       if (row % 2 === 1) {
-        return colors.zebraPrimary;
+        return colors.gray;
       } else {
-        return colors.zebraAlternate;
+        return colors.white;
       }
     });
   };
@@ -103,7 +102,7 @@ d3.text("unemp_states_us_nov_2013.tsv", function(error, data) {
         return +n;
       }
     });
-    color = d3.scale.linear().domain([d3.min(columnData), d3.max(columnData)]).interpolate(d3.interpolateRgb).range([colors.columnLow, colors.columnHigh]);
+    color = d3.scale.linear().domain([0, d3.max(columnData)]).interpolate(d3.interpolateRgb).range([colors.white, colors.crimson]);
     return d3.selectAll(".column-" + column).style("background-color", function(d) {
       return color(d);
     });
@@ -165,8 +164,8 @@ d3.text("unemp_states_us_nov_2013.tsv", function(error, data) {
     return colorColumn(coloredColumn);
   });
   dataCells.on("mouseover", function(d, column) {
-    d3.selectAll(".column-" + column).style("background-color", colors.highlight);
-    d3.select(this.parentNode).style("background-color", colors.highlight);
+    d3.selectAll(".column-" + column).style("background-color", colors.lightYellow);
+    d3.select(this.parentNode).style("background-color", colors.lightYellow);
     return colorColumn(coloredColumn);
   });
   return dataCells.on("mouseout", function(d, column) {

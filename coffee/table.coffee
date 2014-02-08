@@ -28,12 +28,11 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
             break
 
     colors = 
-        zebraPrimary: "#e9e9e9"
-        zebraAlternate: "#ffffff"
-        columnLow: "#fee8c8"
-        columnHigh: "#d7301f"
-        bar: "#a6cee3"
-        highlight: "#ffff99"
+        gray: "#e9e9e9"
+        white: "#ffffff"
+        crimson: "#cb181d"
+        skyBlue: "#a6cee3"
+        lightYellow: "#ffff99"
 
     header = tHead.selectAll("tr")
         # first element contains header text
@@ -52,7 +51,7 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
         .enter()
         .append("th")
         .style("cursor", "n-resize")
-        .style("background-color", colors.zebraPrimary)
+        .style("background-color", colors.gray)
         .text((d) -> d)
 
     dataCells = rows.selectAll("td")
@@ -79,7 +78,7 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
             # will always add a bar chart, so this generalizes
             .data(["Bar Chart"])
             .style("cursor", "n-resize")
-            .style("background-color", colors.zebraPrimary)
+            .style("background-color", colors.gray)
             .text("Bar Chart")
 
         headerCells = header.selectAll("th")
@@ -96,7 +95,7 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
                 "height": svgHeight
                 # "width": (d) -> xScale(+d[sourceColumn])
                 "width": (d) -> xScale(d)
-                "fill": colors.bar
+                "fill": colors.skyBlue
             )
 
         dataCells = rows.selectAll("td")
@@ -138,7 +137,7 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
 
     zebraStripe = () ->
         rows.style("background-color", (d, row) -> 
-                if row % 2 is 1 then colors.zebraPrimary else colors.zebraAlternate
+                if row % 2 is 1 then colors.gray else colors.white
         )
 
     colorColumn = (column) ->
@@ -149,10 +148,10 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
         )
 
         color = d3.scale.linear()
-            .domain([d3.min(columnData), d3.max(columnData)])
+            .domain([0, d3.max(columnData)])
             .interpolate(d3.interpolateRgb)
             # nicer color sequence; higher saturation means higher unemployment
-            .range([colors.columnLow, colors.columnHigh])
+            .range([colors.white, colors.crimson])
 
         d3.selectAll(".column-#{column}")
             .style("background-color", (d) -> color(d))
@@ -222,12 +221,12 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
     )
 
     dataCells.on("mouseover", (d, column) ->
-        # highlight current column
+        # lightYellow current column
         d3.selectAll(".column-#{column}")
-            .style("background-color", colors.highlight)
-        # highlight current row
+            .style("background-color", colors.lightYellow)
+        # lightYellow current row
         d3.select(this.parentNode)
-            .style("background-color", colors.highlight)
+            .style("background-color", colors.lightYellow)
         # restore column coloring
         colorColumn(coloredColumn)
     )

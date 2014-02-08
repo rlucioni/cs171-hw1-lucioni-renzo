@@ -1,29 +1,21 @@
-/*html {
-    display: table;
-    margin: auto;
-}*/
 body {
-    /*display: table-cell;*/
     font-family: 'Lato', sans-serif;
     cursor: default;
 }
-div#buttons {
+#buttons {
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
     text-align: center;
     padding-top: 20px;
 }
-label {
-    display: inline-block;
-    vertical-align: top;
-    margin-right: 3%;
-}
-input {
-    display: inline-block;
-    vertical-align: top;
+#chart {
+    display: block;
+    margin: 0 auto;
 }
 #title {
     font-size: 1.7em;
 }
-rect {
-    fill: teal;
-    fill-opacity: .8;
-}
+/*rect:hover {
+    fill: blue;
+}*/
