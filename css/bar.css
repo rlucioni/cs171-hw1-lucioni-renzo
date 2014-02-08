@@ -1,7 +1,29 @@
+/*html {
+    display: table;
+    margin: auto;
+}*/
+body {
+    /*display: table-cell;*/
+    font-family: 'Lato', sans-serif;
+    cursor: default;
+}
+div#buttons {
+    text-align: center;
+    padding-top: 20px;
+}
+label {
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 3%;
+}
+input {
+    display: inline-block;
+    vertical-align: top;
+}
+#title {
+    font-size: 1.7em;
+}
 rect {
     fill: teal;
     fill-opacity: .8;
-}
-text {
-    font: 10px sans-serif;
 }

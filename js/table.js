@@ -48,7 +48,7 @@ d3.text("unemp_states_us_nov_2013.tsv", function(error, data) {
     columnData = d3.selectAll(".column-" + sourceColumn).data().map(function(n) {
       return +n;
     });
-    xScale = d3.scale.linear().domain([d3.min(columnData) / 2, d3.max(columnData)]).range([0, svgWidth]);
+    xScale = d3.scale.linear().domain([0, d3.max(columnData)]).range([0, svgWidth]);
     header.insert("th").data(["Bar Chart"]).style("cursor", "n-resize").style("background-color", colors.zebraPrimary).text("Bar Chart");
     headerCells = header.selectAll("th");
     rows.insert("td").data(columnData).attr("class", "column-" + barsColumn).append("svg").attr("width", svgWidth).attr("height", svgHeight).append("rect").attr({

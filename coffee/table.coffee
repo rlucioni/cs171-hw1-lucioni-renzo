@@ -71,7 +71,7 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
         columnData = d3.selectAll(".column-#{sourceColumn}").data().map((n) -> +n)
 
         xScale = d3.scale.linear()
-            .domain([d3.min(columnData)/2, d3.max(columnData)])
+            .domain([0, d3.max(columnData)])
             .range([0, svgWidth])
 
         header.insert("th")
