@@ -49,28 +49,32 @@ g = svg.append("g").attr("transform", "translate(" + margin.left + ", " + margin
 title = g.append("text").attr("id", "title").attr("x", svg.attr("width") / 4).attr("text-anchor", "middle").text("Unemployment Rates for States");
 
 d3.tsv("unemp_states_us_nov_2013.tsv", function(data) {
-  var ascending, bars, color, dataset, groups, labels, max, min, reorder, values;
+  var ascending, barHeight, bars, color, dataset, groups, key, labels, max, min, reorder, textBuffer, textHeight, textSize, values;
   min = 0;
   max = d3.max(data, function(d) {
     return d.Rate;
   });
   xScale.domain([min, max]);
   yScale.domain(data.map(state));
+  barHeight = yScale.rangeBand();
+  textSize = yScale.rangeBand() / textSizeScale;
+  textHeight = yScale.rangeBand() * textVerticalScale;
+  textBuffer = yScale.rangeBand() * textHorizontalScale;
   color = d3.scale.linear().domain([min, max]).interpolate(d3.interpolateRgb).range([colors.white, colors.blue]);
   groups = g.append("g").selectAll("g").data(data).enter().append("g").attr("transform", function(d) {
     return "translate(0, " + (yScale(d.State)) + ")";
   });
   bars = groups.append("rect").attr("width", function(d) {
     return xScale(d.Rate);
-  }).attr("height", yScale.rangeBand()).attr("fill", function(d) {
+  }).attr("height", barHeight).attr("fill", function(d) {
     return color(d.Rate);
   });
-  labels = groups.append("text").attr("class", "label").attr("x", labelPadding).attr("y", yScale.rangeBand() * textVerticalScale).attr("font-size", "" + (yScale.rangeBand() / textSizeScale) + "em").attr("text-anchor", "end").text(function(d) {
+  labels = groups.append("text").attr("class", "label").attr("x", labelPadding).attr("y", textHeight).attr("font-size", "" + textSize + "em").attr("text-anchor", "end").text(function(d) {
     return d.State;
   });
   values = groups.append("text").attr("class", "value").attr("x", function(d) {
-    return xScale(d.Rate) - yScale.rangeBand() * textHorizontalScale;
-  }).attr("y", yScale.rangeBand() * textVerticalScale).attr("font-size", "" + (yScale.rangeBand() / textSizeScale) + "em").attr("fill", "white").attr("text-anchor", "start").text(function(d) {
+    return xScale(d.Rate) - textBuffer;
+  }).attr("y", textHeight).attr("font-size", "" + textSize + "em").attr("fill", "white").attr("text-anchor", "start").text(function(d) {
     return d.Rate;
   });
   dataset = data;
@@ -124,10 +128,12 @@ d3.tsv("unemp_states_us_nov_2013.tsv", function(data) {
       return "translate(0, " + (yScale(d.State)) + ")";
     });
   };
-  reorder("Rate");
+  key = "Rate";
+  reorder(key);
   d3.selectAll("input").on("click", function() {
     if (this.type === "radio") {
-      return reorder(this.value);
+      key = this.value;
+      return reorder(key);
     }
   });
   bars.on("mouseover", function() {
@@ -144,6 +150,11 @@ d3.tsv("unemp_states_us_nov_2013.tsv", function(data) {
       k = this.value;
       dataset = data.slice(0, +k + 1 || 9e9);
       groups = svg.select("g").select("g").selectAll("g").data(dataset);
+      ascending = !ascending;
+      reorder(key);
+      groups.transition().duration(500).attr("transform", function(d) {
+        return "translate(0, " + (yScale(d.State)) + ")";
+      });
       groups.exit().each(function() {
         return d3.select(this).select("rect").attr("fill", colors.crimson);
       }).transition().duration(1000).attr("transform", function() {
@@ -154,15 +165,15 @@ d3.tsv("unemp_states_us_nov_2013.tsv", function(data) {
       });
       newBars = newGroups.append("rect").attr("width", function(d) {
         return xScale(d.Rate);
-      }).attr("height", yScale.rangeBand()).attr("fill", function(d) {
+      }).attr("height", barHeight).attr("fill", function(d) {
         return colors.green;
       });
-      newLabels = newGroups.append("text").attr("x", labelPadding).attr("y", yScale.rangeBand() * textVerticalScale).attr("font-size", "" + (yScale.rangeBand() / textSizeScale) + "em").attr("text-anchor", "end").text(function(d) {
+      newLabels = newGroups.append("text").attr("x", labelPadding).attr("y", textHeight).attr("font-size", "" + textSize + "em").attr("text-anchor", "end").text(function(d) {
         return d.State;
       });
       newValues = newGroups.append("text").attr("x", function(d) {
-        return xScale(d.Rate) - yScale.rangeBand() * textHorizontalScale;
-      }).attr("y", yScale.rangeBand() * textVerticalScale).attr("font-size", "" + (yScale.rangeBand() / textSizeScale) + "em").attr("fill", "white").attr("text-anchor", "start").text(function(d) {
+        return xScale(d.Rate) - textBuffer;
+      }).attr("y", textHeight).attr("font-size", "" + textSize + "em").attr("fill", "white").attr("text-anchor", "start").text(function(d) {
         return d.Rate;
       });
       newGroups.transition().duration(500).attr("transform", function(d) {

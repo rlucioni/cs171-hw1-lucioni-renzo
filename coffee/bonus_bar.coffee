@@ -7,8 +7,8 @@ margin =
 canvasWidth = 1000 - margin.left - margin.right
 canvasHeight = 1000 - margin.top - margin.bottom
 
-# used to define bar padding and to scale text positioning and text size; this solution 
-# generalizes better than using fixed bar heights, which causes overlap with larger datasets
+# used to define bar padding and to scale text positioning and text size; immediately fixed 
+# bar heights cause overlap with larger datasets
 barPadding = 0.05
 labelPadding = -10
 textHorizontalScale = 1.5
@@ -52,6 +52,12 @@ d3.tsv("unemp_states_us_nov_2013.tsv", (data) ->
     xScale.domain([min, max])
     yScale.domain(data.map(state))
 
+    # save these dimensions now, so they can be restored later
+    barHeight = yScale.rangeBand()
+    textSize = yScale.rangeBand()/textSizeScale
+    textHeight = yScale.rangeBand()*textVerticalScale
+    textBuffer = yScale.rangeBand()*textHorizontalScale
+
     color = d3.scale.linear()
         .domain([min, max])
         .interpolate(d3.interpolateRgb)
@@ -68,29 +74,28 @@ d3.tsv("unemp_states_us_nov_2013.tsv", (data) ->
 
     bars = groups.append("rect")
         .attr("width", (d) -> xScale(d.Rate))
-        .attr("height", yScale.rangeBand())
+        .attr("height", barHeight)
         .attr("fill", (d) -> color(d.Rate))
 
     labels = groups.append("text")
         .attr("class", "label")
         .attr("x", labelPadding)
-        .attr("y", yScale.rangeBand()*textVerticalScale)
-        .attr("font-size", "#{yScale.rangeBand()/textSizeScale}em")
+        .attr("y", textHeight)
+        .attr("font-size", "#{textSize}em")
         .attr("text-anchor", "end")
         .text((d) -> d.State)
 
     values = groups.append("text")
         .attr("class", "value")
-        .attr("x", (d) -> xScale(d.Rate) - yScale.rangeBand()*textHorizontalScale)
-        .attr("y", yScale.rangeBand()*textVerticalScale)
-        .attr("font-size", "#{yScale.rangeBand()/textSizeScale}em")
+        .attr("x", (d) -> xScale(d.Rate) - textBuffer)
+        .attr("y", textHeight)
+        .attr("font-size", "#{textSize}em")
         .attr("fill", "white")
         .attr("text-anchor", "start")
         .text((d) -> d.Rate)
 
     dataset = data
     ascending = false
-    
     reorder = (key) ->
         ascending = !ascending
         
@@ -135,7 +140,7 @@ d3.tsv("unemp_states_us_nov_2013.tsv", (data) ->
                     return verdict
         )
 
-        # critical: update the yScale domain to match the newly sorted data
+        # update yScale to match the newly sorted data
         yScale.domain(dataset.map(state))
 
         groups.transition()
@@ -144,11 +149,13 @@ d3.tsv("unemp_states_us_nov_2013.tsv", (data) ->
             .attr("transform", (d) -> "translate(0, #{yScale(d.State)})")
 
     # initial sort by Rate
-    reorder("Rate")
+    key = "Rate"
+    reorder(key)
 
     d3.selectAll("input").on("click", () -> 
         if this.type == "radio"
-            reorder(this.value)
+            key = this.value
+            reorder(key)
     )
 
     bars.on("mouseover", () ->
@@ -174,6 +181,15 @@ d3.tsv("unemp_states_us_nov_2013.tsv", (data) ->
                 .selectAll("g")
                 .data(dataset)
 
+            # reapply the same sort currently applied, to adjust for entering or exiting groups
+            ascending = !ascending
+            reorder(key)
+
+            groups.transition()
+                .duration(500)
+                # .delay((d, i) -> i * 25)
+                .attr("transform", (d) -> "translate(0, #{yScale(d.State)})")
+
             groups.exit()
                 .each(() -> d3.select(this).select("rect").attr("fill", colors.crimson))
                 .transition()
@@ -187,20 +203,20 @@ d3.tsv("unemp_states_us_nov_2013.tsv", (data) ->
 
             newBars = newGroups.append("rect")
                 .attr("width", (d) -> xScale(d.Rate))
-                .attr("height", yScale.rangeBand())
+                .attr("height", barHeight)
                 .attr("fill", (d) -> colors.green)
 
             newLabels = newGroups.append("text")
                 .attr("x", labelPadding)
-                .attr("y", yScale.rangeBand()*textVerticalScale)
-                .attr("font-size", "#{yScale.rangeBand()/textSizeScale}em")
+                .attr("y", textHeight)
+                .attr("font-size", "#{textSize}em")
                 .attr("text-anchor", "end")
                 .text((d) -> d.State)
 
             newValues = newGroups.append("text")
-                .attr("x", (d) -> xScale(d.Rate) - yScale.rangeBand()*textHorizontalScale)
-                .attr("y", yScale.rangeBand()*textVerticalScale)
-                .attr("font-size", "#{yScale.rangeBand()/textSizeScale}em")
+                .attr("x", (d) -> xScale(d.Rate) - textBuffer)
+                .attr("y", textHeight)
+                .attr("font-size", "#{textSize}em")
                 .attr("fill", "white")
                 .attr("text-anchor", "start")
                 .text((d) -> d.Rate)
