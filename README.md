@@ -218,7 +218,7 @@ To make the chart more useful, let's add some text labels. Below is a code examp
 ```javascript
 groups.append("text")
         .attr("x", function(d) { return xScale(d.Rate); })
-        .attr("y", function(d) { bar_height/2; })
+        .attr("y", function(d) { return bar_height/2; })
         .text(function(d) { return "your text"; })
 ```
 
