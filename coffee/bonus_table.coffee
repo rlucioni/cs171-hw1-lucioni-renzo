@@ -30,7 +30,7 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
     colors = 
         gray: "#e9e9e9"
         white: "#ffffff"
-        crimson: "#cb181d"
+        blue: "#084594"
         skyBlue: "#a6cee3"
         lightYellow: "#ffff99"
 
@@ -150,9 +150,10 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
             .domain([0, d3.max(columnData)])
             .interpolate(d3.interpolateRgb)
             # nicer color sequence; higher saturation means higher unemployment
-            .range([colors.white, colors.crimson])
+            .range([colors.white, colors.blue])
 
         d3.selectAll(".column-#{column}")
+            .style("color", colors.white)
             .style("background-color", (d) -> color(d))
     
     # apply zebra striping

@@ -22,7 +22,7 @@ d3.text("unemp_states_us_nov_2013.tsv", function(error, data) {
   colors = {
     gray: "#e9e9e9",
     white: "#ffffff",
-    crimson: "#cb181d",
+    blue: "#084594",
     skyBlue: "#a6cee3",
     lightYellow: "#ffff99"
   };
@@ -102,8 +102,8 @@ d3.text("unemp_states_us_nov_2013.tsv", function(error, data) {
         return +n;
       }
     });
-    color = d3.scale.linear().domain([0, d3.max(columnData)]).interpolate(d3.interpolateRgb).range([colors.white, colors.crimson]);
-    return d3.selectAll(".column-" + column).style("background-color", function(d) {
+    color = d3.scale.linear().domain([0, d3.max(columnData)]).interpolate(d3.interpolateRgb).range([colors.white, colors.blue]);
+    return d3.selectAll(".column-" + column).style("color", colors.white).style("background-color", function(d) {
       return color(d);
     });
   };

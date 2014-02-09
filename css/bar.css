@@ -3,11 +3,13 @@ body {
     cursor: default;
 }
 #buttons {
-    width: 200px;
     margin-left: auto;
     margin-right: auto;
     text-align: center;
     padding-top: 20px;
+}
+input[type="radio"] {
+    margin: 0 10px 0 10px;
 }
 #chart {
     display: block;

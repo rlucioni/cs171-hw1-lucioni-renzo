@@ -24,6 +24,10 @@
         <label><input type="radio" name="order" value="Rate" checked>Rate</label>
     </div>
 
+    <div id="slider">
+        <input type="range" name="points" min="0" max="50" step="1" value="50">
+    </div>
+
     <!-- NOTE: I'm using CoffeeScript, a cleaner and less syntactically-dense version of JavaScript, to generate the JavaScript necessary to work with D3. I store my CoffeeScript in the `coffee` directory, and keep the compiled, human-readable JavaScript in the `js` directory. The CoffeeScript code contains my comments and formatting. Thank you for understanding. -->
     <script src="js/bonus_bar.js"></script>
 
