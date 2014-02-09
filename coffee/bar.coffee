@@ -9,15 +9,15 @@ canvasHeight = 1000 - margin.top - margin.bottom
 
 # used to define bar padding and to scale text positioning and text size; this solution 
 # generalizes better than using fixed bar heights, which causes overlap with larger datasets
-barPadding = 0.05
-labelPadding = -10
+barPadding          = 0.05
+labelPadding        = -10
 textHorizontalScale = 1.5
-textVerticalScale = 0.77
-textSizeScale = 21.25
+textVerticalScale   = 0.77
+textSizeScale       = 21.25
 
 colors = 
-    white: "#ffffff"
-    crimson: "#cb181d"
+    white:    "#ffffff"
+    blue:     "#084594"
     darkGray: "#696969"
 
 xScale = d3.scale.linear().range([0, canvasWidth])
@@ -54,7 +54,7 @@ d3.tsv("unemp_states_us_nov_2013.tsv", (data) ->
         .domain([min, max])
         .interpolate(d3.interpolateRgb)
         # nicer color sequence; higher saturation means higher unemployment
-        .range([colors.white, colors.crimson])
+        .range([colors.white, colors.blue])
 
     groups = g.append("g")
         .selectAll("g")

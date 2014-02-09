@@ -24,7 +24,7 @@ textSizeScale = 21.25;
 
 colors = {
   white: "#ffffff",
-  crimson: "#cb181d",
+  blue: "#084594",
   darkGray: "#696969"
 };
 
@@ -54,7 +54,7 @@ d3.tsv("unemp_states_us_nov_2013.tsv", function(data) {
   });
   xScale.domain([min, max]);
   yScale.domain(data.map(state));
-  color = d3.scale.linear().domain([min, max]).interpolate(d3.interpolateRgb).range([colors.white, colors.crimson]);
+  color = d3.scale.linear().domain([min, max]).interpolate(d3.interpolateRgb).range([colors.white, colors.blue]);
   groups = g.append("g").selectAll("g").data(data).enter().append("g").attr("transform", function(d) {
     return "translate(0, " + (yScale(d.State)) + ")";
   });

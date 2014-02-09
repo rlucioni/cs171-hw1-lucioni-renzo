@@ -9,18 +9,18 @@ canvasHeight = 1000 - margin.top - margin.bottom
 
 # used to define bar padding and to scale text positioning and text size; immediately fixed 
 # bar heights cause overlap with larger datasets
-barPadding = 0.05
-labelPadding = -10
+barPadding          = 0.05
+labelPadding        = -10
 textHorizontalScale = 1.5
-textVerticalScale = 0.77
-textSizeScale = 21.25
+textVerticalScale   = 0.77
+textSizeScale       = 21.25
 
 colors = 
-    white: "#ffffff"
-    crimson: "#cb181d"
+    white:    "#ffffff"
+    crimson:  "#cb181d"
     darkGray: "#696969"
-    green: "#41ab5d"
-    blue: "#084594"
+    green:    "#41ab5d"
+    blue:     "#084594"
 
 xScale = d3.scale.linear().range([0, canvasWidth])
 yScale = d3.scale.ordinal().rangeRoundBands([0, canvasHeight], barPadding)
@@ -187,7 +187,6 @@ d3.tsv("unemp_states_us_nov_2013.tsv", (data) ->
 
             groups.transition()
                 .duration(500)
-                # .delay((d, i) -> i * 25)
                 .attr("transform", (d) -> "translate(0, #{yScale(d.State)})")
 
             groups.exit()

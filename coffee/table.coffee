@@ -28,10 +28,10 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
             break
 
     colors = 
-        gray: "#e9e9e9"
-        white: "#ffffff"
-        blue: "#084594"
-        skyBlue: "#a6cee3"
+        gray:        "#e9e9e9"
+        white:       "#ffffff"
+        blue:        "#084594"
+        skyBlue:     "#a6cee3"
         lightYellow: "#ffff99"
 
     header = tHead.selectAll("tr")
