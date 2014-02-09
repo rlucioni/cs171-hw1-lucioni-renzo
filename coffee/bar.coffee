@@ -89,7 +89,7 @@ d3.tsv("unemp_states_us_nov_2013.tsv", (data) ->
         ascending = !ascending
 
         # sort the data
-        data = data.sort((a, b) ->
+        data.sort((a, b) ->
             valueA = a[key]
             valueB = b[key]
             

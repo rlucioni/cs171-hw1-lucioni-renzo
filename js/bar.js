@@ -74,7 +74,7 @@ d3.tsv("unemp_states_us_nov_2013.tsv", function(data) {
   ascending = false;
   reorder = function(key) {
     ascending = !ascending;
-    data = data.sort(function(a, b) {
+    data.sort(function(a, b) {
       var aTieBreaker, bTieBreaker, valueA, valueB, verdict;
       valueA = a[key];
       valueB = b[key];

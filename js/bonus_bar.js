@@ -77,11 +77,11 @@ d3.tsv("unemp_states_us_nov_2013.tsv", function(data) {
   }).attr("y", textHeight).attr("font-size", "" + textSize + "em").attr("fill", "white").attr("text-anchor", "start").text(function(d) {
     return d.Rate;
   });
-  dataset = data;
+  dataset = data.slice(0);
   ascending = false;
   reorder = function(key) {
     ascending = !ascending;
-    dataset = dataset.sort(function(a, b) {
+    dataset.sort(function(a, b) {
       var aTieBreaker, bTieBreaker, valueA, valueB, verdict;
       valueA = a[key];
       valueB = b[key];
@@ -123,7 +123,7 @@ d3.tsv("unemp_states_us_nov_2013.tsv", function(data) {
     });
     yScale.domain(dataset.map(state));
     return groups.transition().duration(1000).delay(function(d, i) {
-      return i * 25;
+      return i * 15;
     }).attr("transform", function(d) {
       return "translate(0, " + (yScale(d.State)) + ")";
     });
@@ -152,9 +152,6 @@ d3.tsv("unemp_states_us_nov_2013.tsv", function(data) {
       groups = svg.select("g").select("g").selectAll("g").data(dataset);
       ascending = !ascending;
       reorder(key);
-      groups.transition().duration(500).attr("transform", function(d) {
-        return "translate(0, " + (yScale(d.State)) + ")";
-      });
       groups.exit().each(function() {
         return d3.select(this).select("rect").attr("fill", colors.crimson);
       }).transition().duration(1000).attr("transform", function() {
@@ -179,7 +176,7 @@ d3.tsv("unemp_states_us_nov_2013.tsv", function(data) {
       newGroups.transition().duration(500).attr("transform", function(d) {
         return "translate(0, " + (yScale(d.State)) + ")";
       });
-      return newBars.transition().duration(2000).attr("fill", function(d) {
+      return newBars.transition().duration(3000).attr("fill", function(d) {
         return color(d.Rate);
       });
     }

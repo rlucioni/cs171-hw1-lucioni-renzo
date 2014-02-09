@@ -94,13 +94,14 @@ d3.tsv("unemp_states_us_nov_2013.tsv", (data) ->
         .attr("text-anchor", "start")
         .text((d) -> d.Rate)
 
-    dataset = data
+    # use array slice to clone data into dataset
+    dataset = data[0..]
     ascending = false
     reorder = (key) ->
         ascending = !ascending
         
         # sort the data
-        dataset = dataset.sort((a, b) ->
+        dataset.sort((a, b) ->
             valueA = a[key]
             valueB = b[key]
             
@@ -145,7 +146,7 @@ d3.tsv("unemp_states_us_nov_2013.tsv", (data) ->
 
         groups.transition()
             .duration(1000)
-            .delay((d, i) -> i * 25)
+            .delay((d, i) -> i * 15)
             .attr("transform", (d) -> "translate(0, #{yScale(d.State)})")
 
     # initial sort by Rate
@@ -181,14 +182,12 @@ d3.tsv("unemp_states_us_nov_2013.tsv", (data) ->
                 .selectAll("g")
                 .data(dataset)
 
-            # reapply the same sort currently applied, to adjust for entering or exiting groups
+            # adjust for entering or exiting groups by reapplying current sort
             ascending = !ascending
             reorder(key)
 
-            groups.transition()
-                .duration(500)
-                .attr("transform", (d) -> "translate(0, #{yScale(d.State)})")
-
+            # color bars contained in unbound groups red, move these groups to 
+            # canvas bottom, and remove from DOM
             groups.exit()
                 .each(() -> d3.select(this).select("rect").attr("fill", colors.crimson))
                 .transition()
@@ -196,10 +195,12 @@ d3.tsv("unemp_states_us_nov_2013.tsv", (data) ->
                 .attr("transform", () -> "translate(0, #{canvasHeight + yScale.rangeBand()})")
                 .remove()
 
+            # bind new groups, spawn at canvas bottom
             newGroups = groups.enter()
                 .append("g")
                 .attr("transform", () -> "translate(0, #{canvasHeight})")
 
+            # color bars contained in newly bound groups green
             newBars = newGroups.append("rect")
                 .attr("width", (d) -> xScale(d.Rate))
                 .attr("height", barHeight)
@@ -220,12 +221,14 @@ d3.tsv("unemp_states_us_nov_2013.tsv", (data) ->
                 .attr("text-anchor", "start")
                 .text((d) -> d.Rate)
 
+            # move newly bound groups to their appropriate locations, given current sort
             newGroups.transition()
                 .duration(500)
                 .attr("transform", (d) -> "translate(0, #{yScale(d.State)})")
                 
+            # fade new bars from green to correct shade of blue
             newBars.transition()
-                .duration(2000)
+                .duration(3000)
                 .attr("fill", (d) -> color(d.Rate))
     )
 )
