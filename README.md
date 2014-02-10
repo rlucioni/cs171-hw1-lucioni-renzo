@@ -165,7 +165,7 @@ var color = d3.scale.linear()
 * Use the scale described above to set the background color of the Rate column based on the position of the row (lowest rate should be red).
 * Make the modifications described in question 3 above (ie. so that the column is colored by rate) and update the relevant code that references the scale.
 
-The code below adds an extra column to the table, containing a horizontal bar with a width that is proportional to the rate value:
+The code below adds an extra column to the table, containing a horizontal bar with a width that is proportional to the rank value:
 
 ```javascript
 rows.insert("td").append("svg")
