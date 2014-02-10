@@ -174,7 +174,10 @@ d3.tsv("unemp_states_us_nov_2013.tsv", (data) ->
     d3.selectAll("input").on("change", () -> 
         if this.type == "range"
             k = this.value
-            # filter dataset size to first k elements
+            # Filter by only considering the first k elements of the original data. 
+            # The spec was vague when asking us to filter "to the top-k elements." 
+            # This is my interpretation - I think that filtering the size of the original 
+            # dataset is more useful than simply trimming bars from the bottom of the chart.
             dataset = data[0..k]
 
             groups = svg.select("g")

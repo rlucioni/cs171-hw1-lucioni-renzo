@@ -74,7 +74,6 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
             .range([0, svgWidth])
 
         header.insert("th")
-        # header.insert("th", ":first-child")
             # will always add a bar chart, so this generalizes
             .data(["Bar Chart"])
             .style("cursor", "n-resize")
@@ -84,7 +83,6 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
         headerCells = header.selectAll("th")
 
         rows.insert("td")
-        # rows.insert("td", ":first-child")
             .data(columnData)
             .attr("class", "column-#{barsColumn}")
             .append("svg")
@@ -93,7 +91,6 @@ d3.text("unemp_states_us_nov_2013.tsv", (error, data) ->
             .append("rect")
             .attr(
                 "height": svgHeight
-                # "width": (d) -> xScale(+d[sourceColumn])
                 "width": (d) -> xScale(d)
                 "fill": colors.skyBlue
             )
