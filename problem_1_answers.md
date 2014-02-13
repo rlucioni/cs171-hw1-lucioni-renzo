@@ -2,5 +2,6 @@
 
 2. The following styles are applied directly to the `th` element containing "Rank." This list ignores styles inherited from parent elements and styles from the default user agent stylesheet.
     - `align="center"`: HTML attribute (CSS equivalent: `text-align:center`), centers the text in this cell
+    - `padding: 3px`: CSS style, adds whitespace of 3 pixels on all sides of the cell contents
 
 3. The DOM inspector allows you to collapse the DOM and selectively expand only those parts you want to study, highlights the portion of the rendered page whose HTML you are examining, and also allows you to dynamically interact with the DOM. On the other hand, the HTML source does not allow you to collapse the DOM or interact dynamically with it. Most importantly, the DOM inspector displays the current state of the DOM, while the HTML source reflects the DOM in its raw, static state, before any JavaScript (e.g., D3) code has been run. You would use the DOM inspector if you wanted to view the current state of the DOM or watch as DOM elements were changed dynamically by JavaScript code. Having access to the HTML source is useful because it allows us to view the state of the DOM before it is manipulated by any JavaScript code.
